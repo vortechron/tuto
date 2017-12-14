@@ -11,6 +11,10 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } 
 
+
+var_dump($_POST);
+exit;
+
 	$vehicle_type = $_POST['vehicle_type'];
     $vehicle_model = $_POST['vehicle_model'];
     $plat_num = $_POST['plat_num'];

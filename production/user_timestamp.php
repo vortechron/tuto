@@ -204,10 +204,12 @@ $timestamps = Database::table('timestamp')
                           <td><?= $value['time']->format('h:i:s A') ?></td>
                           <td>
                             <?php
-                            foreach ($timestamps as $value2) {
+                            foreach ($timestamps as $index => $value2) {
                               if(($value['time_id'] !== $value2['time_id']) 
                                   && $value['time']->format('Y-m-d') == $value2['time']->format('Y-m-d')
                                   && $value2['status'] == 'out'){
+
+                                unset($timestamps[$index]);
                                 echo $value2['time']->format('h:i:s A');
                               }
                             }

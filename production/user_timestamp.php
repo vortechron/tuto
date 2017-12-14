@@ -195,15 +195,12 @@ $timestamps = Database::table('timestamp')
                         ?>
 
                         <?php foreach($timestamps as $value): ?>
-
-                        <?php if($value['status'] == 'in'): ?>
                         <tr>
                           <td><?= $value['time']->format('l') ?></td>
                           <td><?= $value['time']->format('Y-m-d') ?></td>
                           <td><?= $value['time']->format('h:i:s A') ?></td>
                           <td><?= $value['status'] ?></td>
                         </tr>
-                        <?php endif ?>
                         <?php endforeach ?>
                       </tbody>
                     </table>

@@ -1,21 +1,28 @@
 <?php 
-require("php_action/db_conn.php");
+namespace View;
+
+use Illuminate\Database\Capsule\Manager as Database;
 session_start();
 
-$sql = "SELECT * FROM vehicle WHERE user_ic = '{$_SESSION['user_ic']}'";
+require("php_action/db_conn.php");
+require 'php_action/user_name.php';
 
-//$r_query = $con->query($sql) or die(mysqli_error($con));
-$recent = mysqli_query($con, $sql) or die(mysqli_error($con));
-if (mysqli_num_rows($recent) > 0) {
-    // output data of each row
-  while ($row = mysqli_fetch_assoc($recent)) {
-   $vehicle_type = $row['vehicle_type'];            
-   $plat_num = $row['plat_num'];            
-   $vehicle_model = $row['vehicle_model'];            
-   $vehicle_type = $row['vehicle_type'];             
+// $sql = "SELECT * FROM vehicle WHERE user_ic = '{$_SESSION['user_ic']}'";
+
+// //$r_query = $con->query($sql) or die(mysqli_error($con));
+// $recent = mysqli_query($con, $sql) or die(mysqli_error($con));
+// if (mysqli_num_rows($recent) > 0) {
+//     // output data of each row
+//   while ($row = mysqli_fetch_assoc($recent)) {
+//    $vehicle_type = $row['vehicle_type'];            
+//    $plat_num = $row['plat_num'];            
+//    $vehicle_model = $row['vehicle_model'];            
+//    $vehicle_type = $row['vehicle_type'];             
    
- }
-}
+//  }
+// }
+
+$value = Database::table('vehicle')->where('plat_num', $_GET['edit'])->first();
 
 ?>
 <!DOCTYPE html>
@@ -108,9 +115,6 @@ if (mysqli_num_rows($recent) > 0) {
               </div>
 
               <ul class="nav navbar-nav navbar-right">
-                <?php 
-                require 'php_action/user_name.php';
-                ?>
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <img src="images/user.png" alt=""><?php echo $data['user_name']?>                    
@@ -179,7 +183,7 @@ if (mysqli_num_rows($recent) > 0) {
                     <div class="item form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="vehicle_type">Vehicle's Type <span class="required">*</span></label>
                       <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control"  id="vehicle_type" name="vehicle_type" value="<?php echo $vehicle_type; ?>"
+                        <select class="form-control"  id="vehicle_type" name="vehicle_type" value="<?php echo $value['vehicle_type']?>"
                           <option value=""> ~~  Choose Type of Vehicle  ~~</option>
                           <option value="Car">Car</option>
                           <option value="Motorcycle">Motorcycle</option></select>
@@ -189,14 +193,14 @@ if (mysqli_num_rows($recent) > 0) {
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="vehicle_model">Vehicle's Model<span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                         <input type="text" id="vehicle_model" name="vehicle_model" value="<?php echo $vehicle_model; ?>" required class="form-control col-md-7 col-xs-12">
+                         <input type="text" id="vehicle_model" name="vehicle_model" value="<?php echo $value['vehicle_model']; ?>" required class="form-control col-md-7 col-xs-12">
                        </div>
                      </div>
                      
                      <div class="item form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="plat_num">Vehicle's Plat Number <span class="required">*</span></label>
                       <div class="col-md-6 col-sm-6 col-xs-12">
-                       <input type="text" id="plat_num" name="plat_num" value="<?php echo $plat_num; ?>" required class="form-control col-md-7 col-xs-12">
+                       <input type="text" id="plat_num" name="plat_num" value="<?php echo $value['plat_num']; ?>" required class="form-control col-md-7 col-xs-12">
                      </div>
                    </div><br>
 

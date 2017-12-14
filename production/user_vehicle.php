@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php 
+
+namespace View;
+
+use Illuminate\Database\Capsule\Manager as Database;
+
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -246,12 +254,10 @@ require 'php_action/user_name.php';
      <tbody>                 
 
 <?php
-$link = mysql_connect("localhost","root","");
-mysql_select_db("sales",$link);
 
 if(isset($_GET['del'])){
 $del_plat_num = $_GET['del'];
-if(mysql_query("Delete from vehicle where plat_num = '$del_plat_num'")){
+if(Database::delete("Delete from vehicle where plat_num = '$del_plat_num'")){
 echo "<script>alert('Your vehicle of plat number  : $del_plat_num    are deleted successful!')</script>";
          echo "<script>location.href='user_vehicle.php'</script>";
       }
@@ -263,20 +269,16 @@ echo "<script>alert('Your vehicle of plat number  : $del_plat_num    are deleted
     
     }
 //$run = mysql_query("Select * from stok LEFT JOIN daftarstok ON daftarstok.idstok = stok.idstok WHERE daftarstok.nokedai = '{$_SESSION['SESS_MEMBER_ID']}' ");
-$run = mysql_query("Select * from vehicle  WHERE user_ic = '{$_SESSION['user_ic']}' ");
-while($row=mysql_fetch_array($run))
-{
+$vehicles = Database::table('vehicle')->where('user_ic',$_SESSION['user_ic'])->get();
 
-$showplat_num = $row[0];
-$showvehicle_type = $row[2];
-$showvehicle_model = $row[3];
+foreach ($vehicles as $value) {
 
 echo"<tr align='center'>
-<td>$showvehicle_type </td>
-<td>$showvehicle_model </td>
-<td>$showplat_num</td>
-<td><a href='user_edit_vehicle.php?edit=$showplat_num'>Update</td>
-<td><a href='user_vehicle.php?del=$showplat_num'>Remove</td>
+<td>{$value['vehicle_type']} </td>
+<td>{$value['vehicle_model']} </td>
+<td>{$value['plat_num']}</td>
+<td><a href='user_edit_vehicle.php?edit={$value['plat_num']}'>Update</td>
+<td><a href='user_vehicle.php?del={$value['plat_num']}'>Remove</td>
 </tr>";
 }
 ?>
